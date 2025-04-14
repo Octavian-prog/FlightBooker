@@ -1,133 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Flight Booker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-        }
-        .form-group {
-            margin: 10px;
-        }
-        label {
-            font-size: 18px;
-        }
-        select, input, button {
-            font-size: 16px;
-            padding: 10px;
-            width: 220px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        input.invalid {
-            border-color: red;
-            color: red;
-        }
-        button:disabled {
-            background-color: #ddd;
-            cursor: not-allowed;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="form-group">
-        <label for="flight-type">Tipul de zbor:</label>
-        <select id="flight-type">
-            <option value="one-way">Zbor unic</option>
-            <option value="round-trip">Zbor de întoarcere</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="departure-date">Data de plecare:</label>
-        <input type="date" id="departure-date">
-    </div>
-    <div class="form-group">
-        <label for="return-date">Data de întoarcere:</label>
-        <input type="date" id="return-date" disabled>
-    </div>
-    <div class="form-group">
-        <button id="book-button" disabled>Rezervați zborul</button>
-    </div>
-
-    <script>
-        const flightTypeSelect = document.getElementById("flight-type");
-        const departureDateInput = document.getElementById("departure-date");
-        const returnDateInput = document.getElementById("return-date");
-        const bookButton = document.getElementById("book-button");
-
-        // Obține data curentă și setează ca valoare a câmpului de plecare
-        const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().split('T')[0]; // Formatează data ca YYYY-MM-DD
-        departureDateInput.value = formattedDate; // Setează data curentă în input
-
-        // Activează/dezactivează câmpul de întoarcere în funcție de tipul de zbor selectat
-        flightTypeSelect.addEventListener("change", function() {
-            if (flightTypeSelect.value === "round-trip") {
-                returnDateInput.disabled = false;
-            } else {
-                returnDateInput.disabled = true;
-                returnDateInput.classList.remove("invalid");
-            }
-            validateForm();
-        });
-
-        // Validează datele de plecare și întoarcere
-        function validateDates() {
-            let isValid = true;
-
-            const departureDate = new Date(departureDateInput.value);
-            const returnDate = new Date(returnDateInput.value);
-
-            if (flightTypeSelect.value === "round-trip") {
-                if (returnDate < departureDate) {
-                    returnDateInput.classList.add("invalid");
-                    isValid = false;
-                } else {
-                    returnDateInput.classList.remove("invalid");
-                }
-            }
-
-            if (departureDateInput.value === "" || (flightTypeSelect.value === "round-trip" && returnDateInput.value === "")) {
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        // Activează sau dezactivează butonul de rezervare
-        function validateForm() {
-            if (validateDates()) {
-                bookButton.disabled = false;
-            } else {
-                bookButton.disabled = true;
-            }
-        }
-
-        // Evenimente pentru validarea automată a datelor de plecare și întoarcere
-        departureDateInput.addEventListener("input", validateForm);
-        returnDateInput.addEventListener("input", validateForm);
-
-        // Gestionarea clicului pe butonul de rezervare
-        bookButton.addEventListener("click", function() {
-            const departureDate = departureDateInput.value;
-
-            if (flightTypeSelect.value === "one-way") {
-                alert(`Ați rezervat un zbor unic pe ${departureDate}.`);
-            } else {
-                const returnDate = returnDateInput.value;
-                alert(`Ați rezervat un zbor pe ${departureDate} și retur pe ${returnDate}.`);
-            }
-        });
-
-        // Validează inițial formularul
-        validateForm();
-    </script>
+    <div class="container">
+        <div class="form-group">
+            <label for="flight-type">Flight type:</label>
+            <select id="flight-type">
+                <option value="one-way">One-way flight</option>
+                <option value="round-trip">Round-trip flight</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="departure-date">Departure date:</label>
+            <input type="date" id="departure-date">
+        </div>
+        <div class="form-group">
+            <label for="return-date">Return date:</label>
+            <input type="date" id="return-date" disabled>
+        </div>
+        <div class="form-group">
+            <button id="book-button" disabled>Book flight</button>
+            <button id="cancel-button" disabled>Cancel flight</button>
+        </div>
+    </div>  
+    <script src="script.js"></script>
 </body>
 </html>
